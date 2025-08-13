@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYDROBLT - Revolutionary Hydration Shot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a1128;
+            --secondary: #1d2d50;
+            --accent: #ffcc00;
+            --accent-light: #ffdd55;
+            --text: #f5f5f5;
+            --text-secondary: #cccccc;
+            --success: #4ade80;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            animation: pulse 2s infinite;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            text-align: center;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .text-sequence {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 4rem 0;
+        }
+
+        .text-item {
+            position: absolute;
+            font-size: 4.5rem;
+            font-weight: 700;
+            opacity: 0;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .lightning-bolt {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 100%;
+            width: 10px;
+            background: linear-gradient(to bottom, transparent 0%, var(--accent-light) 30%, var(--accent) 50%, var(--accent-light) 70%, transparent 100%);
+            opacity: 0;
+            z-index: -1;
+            box-shadow: 0 0 30px var(--accent);
+        }
+
+        .product-name {
+            font-size: 6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            background: linear-gradient(to right, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            margin: 3rem 0;
+            letter-spacing: 4px;
+            opacity: 0;
+            text-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+        }
+
+        .product-tagline {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            color: var(--text-secondary);
+            opacity: 0;
+        }
+
+        /* Waiting List Section */
+        .waiting-list {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 800px;
+            margin: 0 auto 5rem;
+            border: 1px solid rgba(255, 204, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+        }
+
+        .waiting-list h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .waiting-list p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 1.2rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .email-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .email-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: var(--primary);
+            border: none;
+            border-radius: 50px;
+            padding: 1.2rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Animation Keyframes */
+        @keyframes flash {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            20% { opacity: 0.3; }
+            30% { opacity: 1; }
+            40% { opacity: 0.2; }
+            50% { opacity: 1; }
+            60% { opacity: 0.1; }
+            70% { opacity: 1; }
+            80% { opacity: 0.5; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes thunder {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .text-item {
+                font-size: 3rem;
+            }
+            
+            .product-name {
+                font-size: 4rem;
+            }
+            
+            .waiting-list {
+                padding: 2rem;
+            }
+            
+            .form-group {
+                flex-direction: column;
+            }
+            
+            .submit-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .text-item {
+                font-size: 2.2rem;
+            }
+            
+            .product-name {
+                font-size: 2.8rem;
+            }
+            
+            .waiting-list h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background elements -->
+    <div class="lightning-overlay"></div>
+    <div class="particles"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>HYDROBLT</span>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="text-sequence">
+                <div class="text-item" id="text1">Recovery</div>
+                <div class="text-item" id="text2">Hydration</div>
+                <div class="text-item" id="text3">20 grams of protein</div>
+                <div class="text-item" id="text4">Packed in one tiny shot</div>
+                <div class="lightning-bolt"></div>
+            </div>
+            
+            <h1 class="product-name">HYDROBLT</h1>
+            
+            <p class="product-tagline">The revolutionary all-in-one hydration shot that powers your recovery with lightning speed</p>
+        </section>
+
+        <!-- Waiting List Section -->
+        <section class="waiting-list">
+            <h2>Join the Revolution</h2>
+            <p>Be the first to experience HYDROBLT when we launch. Sign up for exclusive early access and special founding member pricing.</p>
+            
+            <form class="waiting-form">
+                <div class="form-group">
+                    <input type="email" class="email-input" placeholder="Enter your email address" required>
+                    <button type="submit" class="submit-btn">Join Waiting List</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2023 HYDROBLT. All rights reserved. The future of hydration is here.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create thunder sound effect
+            function playThunder() {
+                const context = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = context.createOscillator();
+                const gainNode = context.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(context.destination);
+                
+                // Configure sound
+                oscillator.type = 'sawtooth';
+                oscillator.frequency.setValueAtTime(100, context.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(40, context.currentTime + 1.5);
+                
+                gainNode.gain.setValueAtTime(0.5, context.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 1.5);
+                
+                // Play sound
+                oscillator.start();
+                oscillator.stop(context.currentTime + 1.5);
+            }
+            
+            // Create background particles
+            function createParticles() {
+                const particles = document.querySelector('.particles');
+                for (let i = 0; i < 50; i++) {
+                    const particle = document.createElement('div');
+                    particle.style.position = 'fixed';
+                    particle.style.width = Math.random() * 5 + 1 + 'px';
+                    particle.style.height = particle.style.width;
+                    particle.style.backgroundColor = 'rgba(255, 204, 0, 0.2)';
+                    particle.style.borderRadius = '50%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.zIndex = '1';
+                    particle.style.animation = `float ${Math.random() * 10 + 5}s infinite ease-in-out`;
+                    particle.style.animationDelay = Math.random() * 5 + 's';
+                    particles.appendChild(particle);
+                }
+            }
+            
+            // Animated text sequence
+            function animateTextSequence() {
+                const textItems = [
+                    document.getElementById('text1'),
+                    document.getElementById('text2'),
+                    document.getElementById('text3'),
+                    document.getElementById('text4')
+                ];
+                
+                const lightningBolt = document.querySelector('.lightning-bolt');
+                const productName = document.querySelector('.product-name');
+                const productTagline = document.querySelector('.product-tagline');
+                const waitingList = document.querySelector('.waiting-list');
+                
+                // Timeline for animations
+                const tl = gsap.timeline();
+                
+                // Animate text items with lightning effects
+                textItems.forEach((item, index) => {
+                    tl.to(item, {
+                        opacity: 1,
+                        duration: 0.2,
+                        onStart: () => {
+                            playThunder();
+                            gsap.to(lightningBolt, {
+                                opacity: 1,
+                                duration: 0.1,
+                                onComplete: () => {
+                                    gsap.to(lightningBolt, {
+                                        opacity: 0,
+                                        duration: 0.5
+                                    });
+                                }
+                            });
+                        }
+                    });
+                    
+                    tl.to(item, {
+                        opacity: 0,
+                        duration: 0.5,
+                        delay: 1.5
+                    });
+                });
+                
+                // Final lightning bolt reveal
+                tl.to(lightningBolt, {
+                    opacity: 1,
+                    duration: 0.1,
+                    onStart: playThunder
+                });
+                
+                tl.to(lightningBolt, {
+                    opacity: 0,
+                    duration: 0.5,
+                    delay: 0.2
+                });
+                
+                // Product name reveal
+                tl.to(productName, {
+                    opacity: 1,
+                    duration: 1,
+                    scale: 1,
+                    ease: "elastic.out(1, 0.5)"
+                });
+                
+                // Tagline reveal
+                tl.to(productTagline, {
+                    opacity: 1,
+                    duration: 0.8
+                }, "-=0.5");
+                
+                // Waiting list reveal
+                tl.to(waitingList, {
+                    opacity: 1,
+                    duration: 1,
+                    y: 0
+                }, "-=0.3");
+            }
+            
+            // Initialize
+            createParticles();
+            
+            // Start animations after a short delay
+            setTimeout(() => {
+                animateTextSequence();
+            }, 1000);
+            
+            // Form submission
+            const form = document.querySelector('.waiting-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const emailInput = document.querySelector('.email-input');
+                const email = emailInput.value;
+                
+                // In a real scenario, you would send this to your server
+                if(email) {
+                    // Show success state
+                    emailInput.value = '';
+                    emailInput.placeholder = 'Thanks for joining!';
+                    emailInput.style.backgroundColor = 'rgba(74, 222, 128, 0.1)';
+                    
+                    // Reset after delay
+                    setTimeout(() => {
+                        emailInput.placeholder = 'Enter your email address';
+                        emailInput.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
