@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYDROBLT | Arctic Thunder Hydration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --arctic-blue: #0a3d62;
+            --ice-blue: #60a3bc;
+            --light-blue: #82ccdd;
+            --electric-blue: #4bcffa;
+            --snow-white: #f1f2f6;
+            --deep-blue: #1e3799;
+            --dark-blue: #0c2461;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--deep-blue) 50%, var(--arctic-blue) 100%);
+            color: var(--snow-white);
+            overflow-x: hidden;
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh;
+        }
+
+        .thunder-bg {
+            background-image: url('images/thunder-storm.jpg');
+            background-size: cover;
+            background-position: right;
+            background-blend-mode: overlay;
+            background-color: rgba(10, 61, 98, 0.85);
+        }
+
+        .lightning {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, rgba(75, 207, 250, 0.1) 30%, rgba(75, 207, 250, 0.6) 50%, rgba(75, 207, 250, 0.1) 70%, transparent 100%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .text-flash {
+            animation: flash 0.3s ease-out;
+        }
+
+        @keyframes flash {
+            0% {
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+                text-shadow: 0 0 15px var(--electric-blue);
+            }
+
+            20% {
+                opacity: 0.3;
+            }
+
+            30% {
+                opacity: 1;
+                text-shadow: 0 0 20px var(--electric-blue);
+            }
+
+            40% {
+                opacity: 0.2;
+            }
+
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 25px var(--electric-blue);
+            }
+
+            60% {
+                opacity: 0.1;
+            }
+
+            70% {
+                opacity: 1;
+                text-shadow: 0 0 15px var(--electric-blue);
+            }
+
+            80% {
+                opacity: 0.5;
+            }
+
+            90% {
+                opacity: 1;
+                text-shadow: 0 0 10px var(--electric-blue);
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(75, 207, 250, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(75, 207, 250, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(75, 207, 250, 0);
+            }
+        }
+
+        .lightning-bolt {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, var(--electric-blue) 30%, white 50%, var(--electric-blue) 70%, transparent 100%);
+            opacity: 0;
+            z-index: 0;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 50px;
+            border: 2px solid var(--electric-blue);
+            border-radius: 50px;
+        }
+
+        .scroll-down::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: var(--electric-blue);
+            border-radius: 50%;
+            animation: scroll 1.5s infinite;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translate(-50%, 0);
+                opacity: 0;
+            }
+
+            40% {
+                opacity: 1;
+            }
+
+            80% {
+                transform: translate(-50%, 20px);
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .section-hidden {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+
+        .section-show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 10px rgba(75, 207, 250, 0.7);
+        }
+
+        .feature-card {
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(96, 163, 188, 0.2);
+            transform: scale(1.05);
+        }
+
+        .review-card {
+            transition: all 0.4s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .lightning-animation {
+            animation: lightningFlash 5s infinite;
+        }
+
+        @keyframes lightningFlash {
+
+            0%,
+            100% {
+                opacity: 0;
+            }
+
+            5% {
+                opacity: 0.8;
+            }
+
+            10% {
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 0.9;
+            }
+
+            20% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="relative overflow-x-hidden">
+    <!-- Lightning Overlay -->
+    <div class="lightning lightning-animation"></div>
+
+    <!-- Lightning Bolt -->
+    <div class="lightning-bolt"></div>
+
+    <!-- Main Content -->
+    <div class="thunder-bg min-h-screen relative z-10">
+        <!-- Hero Section -->
+        <section class="min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-4 py-20">
+            <div
+                class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[rgba(10,61,98,0.9)] to-[rgba(12,36,97,0.95)] z-0">
+            </div>
+
+            <div class="relative z-10 text-center max-w-4xl px-4">
+                <div class="mb-10">
+                    <h1 class="text-5xl md:text-7xl font-bold mb-4 glow-text" id="main-title">HYDROBLT</h1>
+                    <div class="h-40 flex items-center justify-center my-12 relative">
+                        <div class="absolute w-full h-1 bg-blue-300 opacity-30"></div>
+                        <div class="text-flash-container space-y-4">
+                            <p class="text-3xl md:text-4xl font-semibold text-flash" id="text1">Recovery</p>
+                            <p class="text-3xl md:text-4xl font-semibold text-flash" id="text2">Hydration</p>
+                            <p class="text-3xl md:text-4xl font-semibold text-flash" id="text3">20 grams of protein</p>
+                            <p class="text-3xl md:text-4xl font-semibold text-flash" id="text4">Packed in one tiny shot
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-xl md:text-2xl text-blue-200 mb-12 max-w-2xl mx-auto">
+                    Experience the power of lightning-fast recovery with our revolutionary arctic formula.
+                    Engineered for peak performance in the harshest conditions.
+                </p>
+
+                <div class="mt-12">
+                    <div class="scroll-down"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-20 px-4 relative z-10 section-hidden" id="features">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-4">Revolutionary Hydration Technology</h2>
+                <p class="text-blue-200 text-center max-w-3xl mx-auto mb-16">
+                    Our cutting-edge formula combines arctic-sourced ingredients with advanced science for unparalleled
+                    results
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Feature Card 1 -->
+                    <div class="feature-card bg-blue-900/40 backdrop-blur-sm rounded-2xl p-6 border border-blue-700/30">
+                        <div class="w-16 h-16 rounded-full bg-blue-700/30 flex items-center justify-center mb-4">
+                            <i class="fas fa-bolt text-2xl text-blue-300"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Instant Absorption</h3>
+                        <p class="text-blue-200">Our nano-hydration technology delivers nutrients 3x faster than
+                            conventional supplements.</p>
+                    </div>
+
+                    <!-- Feature Card 2 -->
+                    <div class="feature-card bg-blue-900/40 backdrop-blur-sm rounded-2xl p-6 border border-blue-700/30">
+                        <div class="w-16 h-16 rounded-full bg-blue-700/30 flex items-center justify-center mb-4">
+                            <i class="fas fa-snowflake text-2xl text-blue-300"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Arctic Sourced</h3>
+                        <p class="text-blue-200">Ingredients harvested from pristine arctic waters for maximum purity.
+                        </p>
+                    </div>
+
+                    <!-- Feature Card 3 -->
+                    <div class="feature-card bg-blue-900/40 backdrop-blur-sm rounded-2xl p-6 border border-blue-700/30">
+                        <div class="w-16 h-16 rounded-full bg-blue-700/30 flex items-center justify-center mb-4">
+                            <i class="fas fa-dumbbell text-2xl text-blue-300"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">20g Protein</h3>
+                        <p class="text-blue-200">Premium plant-based protein for muscle recovery without the bloat.</p>
+                    </div>
+
+                    <!-- Feature Card 4 -->
+                    <div class="feature-card bg-blue-900/40 backdrop-blur-sm rounded-2xl p-6 border border-blue-700/30">
+                        <div class="w-16 h-16 rounded-full bg-blue-700/30 flex items-center justify-center mb-4">
+                            <i class="fas fa-wind text-2xl text-blue-300"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Electrolyte Boost</h3>
+                        <p class="text-blue-200">Enhanced with 5 key electrolytes for optimal hydration balance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Info Section -->
+        <section class="py-20 px-4 relative z-10 section-hidden" id="product">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col lg:flex-row items-center gap-12">
+                    <div class="lg:w-1/2">
+                        <div class="relative">
+                            <div class="bg-blue-800/20 border-2 border-blue-700/30 rounded-3xl p-8 backdrop-blur-sm">
+                                <h2 class="text-3xl font-bold mb-4">The Science of HYDROBLT</h2>
+                                <p class="text-blue-200 mb-6">
+                                    Our proprietary formula combines glacier minerals with cutting-edge hydration
+                                    science to deliver results you can feel in seconds.
+                                </p>
+
+                                <div class="space-y-4">
+                                    <div class="flex items-start">
+                                        <div
+                                            class="mt-1 w-8 h-8 rounded-full bg-blue-700/30 flex items-center justify-center flex-shrink-0 mr-3">
+                                            <i class="fas fa-check text-blue-300"></i>
+                                        </div>
+                                        <p><span class="font-bold">Rapid Cellular Hydration:</span> Penetrates cells 70%
+                                            faster than water alone</p>
+                                    </div>
+
+                                    <div class="flex items-start">
+                                        <div
+                                            class="mt-1 w-8 h-8 rounded-full bg-blue-700/30 flex items-center justify-center flex-shrink-0 mr-3">
+                                            <i class="fas fa-check text-blue-300"></i>
+                                        </div>
+                                        <p><span class="font-bold">Sustained Energy:</span> Proprietary slow-release
+                                            carbohydrates provide 4 hours of steady energy</p>
+                                    </div>
+
+                                    <div class="flex items-start">
+                                        <div
+                                            class="mt-1 w-8 h-8 rounded-full bg-blue-700/30 flex items-center justify-center flex-shrink-0 mr-3">
+                                            <i class="fas fa-check text-blue-300"></i>
+                                        </div>
+                                        <p><span class="font-bold">Antioxidant Protection:</span> Arctic berry extracts
+                                            combat exercise-induced oxidative stress</p>
+                                    </div>
+
+                                    <div class="flex items-start">
+                                        <div
+                                            class="mt-1 w-8 h-8 rounded-full bg-blue-700/30 flex items-center justify-center flex-shrink-0 mr-3">
+                                            <i class="fas fa-check text-blue-300"></i>
+                                        </div>
+                                        <p><span class="font-bold">Muscle Recovery:</span> 20g of hydrolyzed protein
+                                            rebuilds muscle fibers 40% faster</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="absolute -top-6 -right-6 w-24 h-24 bg-blue-500 rounded-full filter blur-xl opacity-30 z-0">
+                            </div>
+                            <div
+                                class="absolute -bottom-6 -left-6 w-32 h-32 bg-blue-400 rounded-full filter blur-xl opacity-20 z-0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2 flex justify-center">
+                        <div class="relative">
+                            <div
+                                class="w-64 h-80 bg-gradient-to-b from-blue-700 to-blue-900 rounded-2xl shadow-2xl flex items-center justify-center floating">
+                                <div
+                                    class="w-48 h-64 bg-gradient-to-b from-cyan-500 to-blue-800 rounded-xl relative overflow-hidden">
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="text-5xl font-bold text-white opacity-80">HYDRO</div>
+                                    </div>
+                                    <div
+                                        class="absolute bottom-0 w-full h-12 bg-blue-900/80 flex items-center justify-center">
+                                        <div class="text-xl font-bold text-blue-200">BLT</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="absolute -top-8 -right-8 w-16 h-16 rounded-full bg-blue-400/20 backdrop-blur-sm border border-blue-500/30 flex items-center justify-center pulse">
+                                <span class="text-xs font-bold text-blue-200">NEW</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="py-20 px-4 relative z-10 section-hidden" id="testimonials">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-4">Athletes Love HYDROBLT</h2>
+                <p class="text-blue-200 text-center max-w-3xl mx-auto mb-16">
+                    Hear from elite performers who have transformed their recovery with our formula
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Review 1 -->
+                    <div class="review-card bg-blue-900/40 backdrop-blur-sm rounded-2xl p-6 border border-blue-700/30">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-blue-700 flex items-center justify-center mr-4">
+                                <span class="text-lg font-bold">SR</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold">Sarah Reynolds</h3>
+                                <div class="flex text-yellow-300">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-blue-200 italic mb-4">
+                            "After marathon training sessions, HYDROBLT is my secret weapon. The recovery time has been
+                            cut in half!"
+                        </p>
+                        <p class="text-sm text-blue-400">Professional Triathlete</p>
+                    </div>
+
+                    <!-- Review 2 -->
+                    <div class="review-card bg-blue-900/40 backdrop-blur-sm rounded-2xl p-6 border border-blue-700/30">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-blue-700 flex items-center justify-center mr-4">
+                                <span class="text-lg font-bold">MJ</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold">Marcus Johnson</h3>
+                                <div class="flex text-yellow-300">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-blue-200 italic mb-4">
+                            "The muscle recovery is incredible. I've tried everything, but nothing works as fast as
+                            HYDROBLT."
+                        </p>
+                        <p class="text-sm text-blue-400">NBA Strength Coach</p>
+                    </div>
+
+                    <!-- Review 3 -->
+                    <div class="review-card bg-blue-900/40 backdrop-blur-sm rounded-2xl p-6 border border-blue-700/30">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-blue-700 flex items-center justify-center mr-4">
+                                <span class="text-lg font-bold">TL</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold">Taylor Liu</h3>
+                                <div class="flex text-yellow-300">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-blue-200 italic mb-4">
+                            "As a mountaineer, hydration is critical. HYDROBLT works in extreme conditions where water
+                            alone fails."
+                        </p>
+                        <p class="text-sm text-blue-400">Extreme Athlete</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="py-20 px-4 relative z-10 section-hidden" id="faq">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-4">Frequently Asked Questions</h2>
+                <p class="text-blue-200 text-center mb-16">Everything you need to know about HYDROBLT</p>
+
+                <div class="space-y-4">
+                    <!-- FAQ 1 -->
+                    <div class="bg-blue-900/40 backdrop-blur-sm rounded-xl p-6 border border-blue-700/30">
+                        <button class="flex justify-between items-center w-full text-left">
+                            <h3 class="font-bold text-lg">How fast does HYDROBLT work?</h3>
+                            <i class="fas fa-chevron-down text-blue-300"></i>
+                        </button>
+                        <p class="mt-3 text-blue-200 hidden">
+                            Most users report feeling the effects within 5-7 minutes of consumption. The nano-hydration
+                            technology allows for rapid absorption at the cellular level, making it 3x faster than
+                            conventional hydration methods.
+                        </p>
+                    </div>
+
+                    <!-- FAQ 2 -->
+                    <div class="bg-blue-900/40 backdrop-blur-sm rounded-xl p-6 border border-blue-700/30">
+                        <button class="flex justify-between items-center w-full text-left">
+                            <h3 class="font-bold text-lg">Is HYDROBLT suitable for vegans?</h3>
+                            <i class="fas fa-chevron-down text-blue-300"></i>
+                        </button>
+                        <p class="mt-3 text-blue-200 hidden">
+                            Absolutely! Our formula uses plant-based proteins and is completely free from animal
+                            products. It's also gluten-free, soy-free, and non-GMO.
+                        </p>
+                    </div>
+
+                    <!-- FAQ 3 -->
+                    <div class="bg-blue-900/40 backdrop-blur-sm rounded-xl p-6 border border-blue-700/30">
+                        <button class="flex justify-between items-center w-full text-left">
+                            <h3 class="font-bold text-lg">How often can I take HYDROBLT?</h3>
+                            <i class="fas fa-chevron-down text-blue-300"></i>
+                        </button>
+                        <p class="mt-3 text-blue-200 hidden">
+                            For optimal results, we recommend 1-2 servings daily. It's safe for daily use and designed
+                            to complement an active lifestyle. Maximum recommended is 3 servings per 24 hours.
+                        </p>
+                    </div>
+
+                    <!-- FAQ 4 -->
+                    <div class="bg-blue-900/40 backdrop-blur-sm rounded-xl p-6 border border-blue-700/30">
+                        <button class="flex justify-between items-center w-full text-left">
+                            <h3 class="font-bold text-lg">When is the best time to take HYDROBLT?</h3>
+                            <i class="fas fa-chevron-down text-blue-300"></i>
+                        </button>
+                        <p class="mt-3 text-blue-200 hidden">
+                            HYDROBLT is most effective when taken within 30 minutes after intense physical activity. It
+                            can also be used as a morning boost or during long endurance activities.
+                        </p>
+                    </div>
+
+                    <!-- FAQ 5 -->
+                    <div class="bg-blue-900/40 backdrop-blur-sm rounded-xl p-6 border border-blue-700/30">
+                        <button class="flex justify-between items-center w-full text-left">
+                            <h3 class="font-bold text-lg">How is HYDROBLT different from other hydration products?</h3>
+                            <i class="fas fa-chevron-down text-blue-300"></i>
+                        </button>
+                        <p class="mt-3 text-blue-200 hidden">
+                            Our proprietary Arctic Mineral Blend™ combined with nano-encapsulated protein sets HYDROBLT
+                            apart. This technology allows for unprecedented absorption rates and effectiveness in
+                            extreme conditions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Waiting List Section -->
+        <section class="py-20 px-4 relative z-10 section-hidden" id="waiting-list">
+            <div class="max-w-4xl mx-auto text-center">
+                <div
+                    class="bg-gradient-to-br from-blue-800 to-blue-900 rounded-3xl p-10 border border-blue-700/30 backdrop-blur-sm relative overflow-hidden">
+                    <div
+                        class="absolute -top-20 -right-20 w-64 h-64 bg-blue-500 rounded-full filter blur-[100px] opacity-20">
+                    </div>
+                    <div
+                        class="absolute -bottom-20 -left-20 w-64 h-64 bg-cyan-400 rounded-full filter blur-[100px] opacity-20">
+                    </div>
+
+                    <h2 class="text-4xl font-bold mb-4">Join the Revolution</h2>
+                    <p class="text-xl text-blue-200 mb-8 max-w-2xl mx-auto">
+                        Be among the first to experience lightning-fast recovery. Sign up now for exclusive launch
+                        access and special pricing.
+                    </p>
+
+                    <form class="max-w-2xl mx-auto">
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <input type="email" placeholder="Enter your email"
+                                class="flex-grow bg-blue-900/50 border border-blue-700/30 rounded-full px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button type="submit"
+                                class="bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold rounded-full px-8 py-4 hover:opacity-90 transition-all duration-300 shadow-lg shadow-blue-500/30">
+                                Join Waiting List
+                            </button>
+                        </div>
+                        <p class="text-blue-300 text-sm mt-4">
+                            We respect your privacy. Unsubscribe at any time.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-10 px-4 border-t border-blue-800/30 text-center">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex justify-center mb-6">
+                    <div class="text-2xl font-bold flex items-center">
+                        <i class="fas fa-bolt text-blue-400 mr-2"></i>
+                        HYDROBLT
+                    </div>
+                </div>
+                <p class="text-blue-300 mb-6">
+                    The future of hydration is here. Harness the power of the Arctic.
+                </p>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="#" class="text-blue-300 hover:text-white"><i class="fab fa-instagram text-lg"></i></a>
+                    <a href="#" class="text-blue-300 hover:text-white"><i class="fab fa-twitter text-lg"></i></a>
+                    <a href="#" class="text-blue-300 hover:text-white"><i class="fab fa-facebook text-lg"></i></a>
+                    <a href="#" class="text-blue-300 hover:text-white"><i class="fab fa-tiktok text-lg"></i></a>
+                </div>
+                <p class="text-blue-400 text-sm">
+                    © 2023 HYDROBLT. All rights reserved. Designed with ⚡ in the Arctic.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Text flash animation
+            const textElements = ['text1', 'text2', 'text3', 'text4'];
+            let currentIndex = 0;
+
+            function flashText() {
+                // Reset all elements
+                textElements.forEach(id => {
+                    const el = document.getElementById(id);
+                    el.classList.remove('text-flash');
+                    el.style.opacity = '0';
+                });
+
+                // Flash current element
+                const currentEl = document.getElementById(textElements[currentIndex]);
+                currentEl.classList.add('text-flash');
+
+                // Move to next element
+                currentIndex = (currentIndex + 1) % textElements.length;
+
+                // Schedule next flash
+                setTimeout(flashText, 3000);
+            }
+
+            // Initialize text flash
+            setTimeout(flashText, 1000);
+
+            // GSAP animations
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Lightning bolt effect
+            function lightningEffect() {
+                gsap.to('.lightning-bolt', {
+                    opacity: 1,
+                    duration: 0.1,
+                    onComplete: () => {
+                        gsap.to('.lightning-bolt', {
+                            opacity: 0,
+                            duration: 0.5
+                        });
+                    }
+                });
+            }
+
+            // Random lightning strikes
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    lightningEffect();
+                }
+            }, 5000);
+
+            // Initial lightning strike
+            setTimeout(lightningEffect, 1500);
+
+            // Section reveal on scroll
+            const sections = document.querySelectorAll('.section-hidden');
+
+            sections.forEach(section => {
+                gsap.to(section, {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    },
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: 'power2.out'
+                });
+            });
+
+            // Hero title animation
+            gsap.from('#main-title', {
+                duration: 1.5,
+                y: 50,
+                opacity: 0,
+                ease: 'power3.out'
+            });
+
+            // FAQ accordion
+            const faqButtons = document.querySelectorAll('#faq button');
+
+            faqButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const isOpen = content.style.display === 'block';
+
+                    // Close all others
+                    document.querySelectorAll('#faq p').forEach(p => {
+                        p.style.display = 'none';
+                    });
+
+                    // Reset all icons
+                    document.querySelectorAll('#faq i').forEach(icon => {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    });
+
+                    // Toggle this one
+                    if (!isOpen) {
+                        content.style.display = 'block';
+                        button.querySelector('i').classList.remove('fa-chevron-down');
+                        button.querySelector('i').classList.add('fa-chevron-up');
+                    }
+                });
+            });
+
+            // Form submission
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const emailInput = this.querySelector('input[type="email"]');
+
+                // Simple validation
+                if (emailInput.value && emailInput.value.includes('@')) {
+                    // Show success
+                    emailInput.value = '';
+                    emailInput.placeholder = 'Thank you for joining!';
+
+                    // Reset after delay
+                    setTimeout(() => {
+                        emailInput.placeholder = 'Enter your email';
+                    }, 3000);
+                } else {
+                    // Show error
+                    emailInput.style.borderColor = '#f87171';
+                    setTimeout(() => {
+                        emailInput.style.borderColor = '';
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
